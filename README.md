@@ -4,7 +4,7 @@
 
 ## 本地开发
 
-需要 Hugo Extended（v0.158 及以上）以及 git。
+需要 Hugo Extended（主题支持 0.164.0 – 0.167.0，CI 使用 0.167.0）以及 git。
 
 ```bash
 git clone --recursive git@github.com:mimimimimi39/mimimimimi39.github.io.git
