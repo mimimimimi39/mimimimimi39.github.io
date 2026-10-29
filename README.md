@@ -27,6 +27,8 @@ hugo server -D
 
 文章放在 `content/posts/`，`draft: true` 的文章只在 `hugo server -D` 下可见。
 
+完整的写作规范（front matter、图片存放、简码、发布流程）见 [docs/writing-guide.md](docs/writing-guide.md)。
+
 ## 配置
 
 - 站点：`config/_default/hugo.toml`
@@ -55,3 +57,4 @@ git submodule update --remote themes/blowfish
 | `static/` | 原样拷贝的静态文件（favicon 等） |
 | `themes/blowfish/` | Blowfish 主题（git submodule） |
 | `config/_default/` | 站点配置 |
+| `docs/` | 项目文档（写作指南） |
