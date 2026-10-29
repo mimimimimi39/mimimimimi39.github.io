@@ -1,0 +1,64 @@
+# -- Theme Options --
+# Refer to the theme docs for more details about each of these parameters.
+# https://blowfish.page/docs/configuration/#theme-parameters
+
+colorScheme = "avocado"
+defaultAppearance = "light"
+autoSwitchAppearance = true
+
+enableA11y = false
+enableSearch = true
+enableCodeCopy = true
+
+mainSections = ["posts"]
+replyByEmail = false
+
+[header]
+  layout = "basic"
+
+[footer]
+  showMenu = false
+  showCopyright = true
+  showThemeAttribution = true
+  showAppearanceSwitcher = true
+  showScrollToTop = true
+
+[homepage]
+  layout = "profile"
+  showRecent = true
+  showRecentItems = 5
+  showMoreLink = true
+  showMoreLinkDest = "/posts"
+  cardView = false
+
+[article]
+  showDate = true
+  showDateUpdated = false
+  showAuthor = true
+  showHero = true
+  heroStyle = "basic"
+  showBreadcrumbs = true
+  showDraftLabel = true
+  showEdit = false
+  showPagination = true
+  showReadingTime = true
+  showTableOfContents = true
+  showTaxonomies = true
+  showWordCount = true
+  showSummary = true
+  showHeadingAnchors = true
+  sharingLinks = false
+
+[list]
+  showBreadcrumbs = false
+  showSummary = true
+  showTableOfContents = false
+  showCards = false
+  groupByYear = true
+  cardView = false
+
+[taxonomy]
+  showTermCount = true
+
+[sitemap]
+  excludedKinds = []
