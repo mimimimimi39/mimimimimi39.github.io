@@ -102,6 +102,27 @@
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const fine = window.matchMedia("(pointer: fine)").matches;
 
+  const clickEmojis = ["(๑>◡<๑)", "(｡•̀ᴗ-)✧", "(๑•̀ㅂ•́)و✧", "(｡>﹏<｡)", "(ฅ'ω'ฅ)", "(=^･ω･^=)", "(๑˃̵ᴗ˂̵)♡", "(´｡• ᵕ •｡`)", "(๑•́ ₃ •̀๑)", "(｡•́︿•̀｡)", "ฅ( ̳• ◡ • ̳)ฅ", "(≧▽≦)", "(๑´ㅂ`๑)", "(｡･ω･｡)ﾉ♡", "(*/ω＼*)", "(๑>؂<๑)", "(*≧ω≦)", "(๑˘︶˘๑)", "(●'◡'●)", "(=ↀωↀ=)"];
+  const clickColors = ["#2563eb", "#db2777", "#7c3aed", "#0891b2"];
+
+  const spawnClickEmoji = (event) => {
+    if (reduce) return;
+    const node = document.createElement("span");
+    node.className = "bf-click-emoji";
+    node.textContent = clickEmojis[Math.floor(Math.random() * clickEmojis.length)];
+    node.style.left = event.clientX + "px";
+    node.style.top = event.clientY + "px";
+    node.style.color = clickColors[Math.floor(Math.random() * clickColors.length)];
+    node.style.setProperty("--bf-drift", (Math.random() * 44 - 22).toFixed(1) + "px");
+    node.style.setProperty("--bf-rotate", (Math.random() * 16 - 8).toFixed(1) + "deg");
+    document.body.appendChild(node);
+    node.addEventListener("animationend", () => node.remove(), { once: true });
+    setTimeout(() => node.remove(), 1400);
+    const active = document.querySelectorAll(".bf-click-emoji");
+    if (active.length > 12) active[0].remove();
+  };
+  document.addEventListener("pointerdown", spawnClickEmoji, { passive: true });
+
   const trail = document.getElementById("bf-trail");
   if (trail && fine && !reduce) {
     const ctx = trail.getContext("2d");
