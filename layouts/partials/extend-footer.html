@@ -148,10 +148,36 @@
     { title: "空に免じて (念及长空)", artist: "mimi小窝", src: encodeURI("{{ "music/空に免じて(念及长空).mp3" | relURL }}") }
   ];
 
-  let index = Number(localStorage.getItem("bf-track") || 0);
+  const STATE_KEY = "bf-state";
+  const readState = () => {
+    try {
+      const value = JSON.parse(sessionStorage.getItem(STATE_KEY));
+      return value && typeof value === "object" ? value : null;
+    } catch (error) {
+      return null;
+    }
+  };
+  const savedState = readState();
+  const isHome = !!document.querySelector(".bf-hero");
+  let index = savedState && Number.isInteger(savedState.index) ? savedState.index : Number(localStorage.getItem("bf-track") || 0);
   if (!Number.isFinite(index) || index < 0 || index >= tracks.length) index = 0;
   let repeat = localStorage.getItem("bf-loop") === "1";
   let dragging = false;
+  let restoring = !!savedState;
+  let intendedPlaying = false;
+  let lastSave = 0;
+
+  const saveState = () => {
+    if (restoring || !audio.src) return;
+    try {
+      sessionStorage.setItem(STATE_KEY, JSON.stringify({
+        index,
+        time: audio.currentTime || 0,
+        playing: intendedPlaying,
+        at: Date.now()
+      }));
+    } catch (error) {}
+  };
 
   const fmt = (value) => {
     if (!Number.isFinite(value)) return "0:00";
@@ -185,7 +211,9 @@
     current.textContent = "0:00";
     duration.textContent = "0:00";
     if (autoplay) {
+      intendedPlaying = true;
       audio.play().catch(() => {});
+      saveState();
     }
   };
 
@@ -218,10 +246,14 @@
 
   play.addEventListener("click", () => {
     if (audio.paused) {
+      intendedPlaying = true;
       audio.play().catch(() => {});
     } else {
+      intendedPlaying = false;
+      removeUnlock();
       audio.pause();
     }
+    saveState();
   });
 
   prev.addEventListener("click", () => load(index - 1, true));
@@ -264,45 +296,94 @@
       seek.value = String((audio.currentTime / audio.duration) * 100);
     }
     current.textContent = fmt(audio.currentTime);
+    const now = Date.now();
+    if (!restoring && now - lastSave > 700) {
+      lastSave = now;
+      saveState();
+    }
   });
-  audio.addEventListener("play", syncIcon);
+  audio.addEventListener("play", () => {
+    removeUnlock();
+    syncIcon();
+  });
   audio.addEventListener("pause", syncIcon);
+  audio.addEventListener("seeked", saveState);
   audio.addEventListener("ended", () => {
-    if (repeat) {
-      load(index + 1, true);
-    } else if (index + 1 < tracks.length) {
+    if (repeat || index + 1 < tracks.length) {
       load(index + 1, true);
     } else {
+      intendedPlaying = false;
+      saveState();
       syncIcon();
     }
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) saveState();
   });
 
   if ("mediaSession" in navigator) {
     try {
       navigator.mediaSession.setActionHandler("previoustrack", () => load(index - 1, true));
       navigator.mediaSession.setActionHandler("nexttrack", () => load(index + 1, true));
-      navigator.mediaSession.setActionHandler("play", () => audio.play().catch(() => {}));
-      navigator.mediaSession.setActionHandler("pause", () => audio.pause());
+      navigator.mediaSession.setActionHandler("play", () => {
+        intendedPlaying = true;
+        audio.play().catch(() => {});
+        saveState();
+      });
+      navigator.mediaSession.setActionHandler("pause", () => {
+        intendedPlaying = false;
+        removeUnlock();
+        audio.pause();
+        saveState();
+      });
     } catch (error) {}
   }
 
   load(index, false);
   syncIcon();
 
-  if (document.querySelector(".bf-hero")) {
-    const startMusic = () => {
-      if (audio.paused) audio.play().catch(() => {});
-    };
-    const unlock = () => {
+  let unlockHandler = null;
+  const removeUnlock = () => {
+    if (!unlockHandler) return;
+    document.removeEventListener("pointerdown", unlockHandler);
+    document.removeEventListener("keydown", unlockHandler);
+    document.removeEventListener("touchstart", unlockHandler);
+    unlockHandler = null;
+  };
+  const armUnlock = () => {
+    if (unlockHandler) return;
+    unlockHandler = () => {
+      removeUnlock();
+      if (!intendedPlaying) return;
       startMusic();
-      document.removeEventListener("pointerdown", unlock);
-      document.removeEventListener("keydown", unlock);
-      document.removeEventListener("touchstart", unlock);
     };
-    startMusic();
-    document.addEventListener("pointerdown", unlock, { once: true, passive: true });
-    document.addEventListener("keydown", unlock, { once: true });
-    document.addEventListener("touchstart", unlock, { once: true, passive: true });
+    document.addEventListener("pointerdown", unlockHandler, { passive: true });
+    document.addEventListener("keydown", unlockHandler);
+    document.addEventListener("touchstart", unlockHandler, { passive: true });
+  };
+  const startMusic = () => {
+    intendedPlaying = true;
+    if (audio.paused) {
+      const attempt = audio.play();
+      if (attempt) attempt.catch(() => armUnlock());
+    }
+  };
+  const applyState = () => {
+    if (savedState && Number.isFinite(savedState.time) && savedState.time > 0) {
+      const limit = Number.isFinite(audio.duration) ? Math.max(0, audio.duration - 0.4) : savedState.time;
+      audio.currentTime = Math.min(savedState.time, limit);
+    }
+    if (savedState ? savedState.playing : isHome) {
+      startMusic();
+    }
+    restoring = false;
+  };
+  if (audio.readyState >= 1) {
+    applyState();
+  } else {
+    audio.addEventListener("loadedmetadata", applyState, { once: true });
   }
+
 })();
 </script>
