@@ -110,11 +110,17 @@ html[data-accent="violet"] {
   z-index: 10000;
   display: grid;
   place-items: center;
+  padding: 2rem;
+  overflow: hidden;
   background:
     radial-gradient(60% 60% at 50% 42%, rgba(96, 165, 250, 0.28), transparent 70%),
     linear-gradient(160deg, #ffffff 0%, #eef6ff 45%, #dbeafe 100%);
   cursor: pointer;
-  animation: bf-intro-out 0.9s cubic-bezier(0.7, 0, 0.3, 1) 2.6s forwards;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  transition: opacity 1.3s ease, transform 1.3s cubic-bezier(0.4, 0, 0.2, 1), filter 1.3s ease;
+  will-change: opacity, transform, filter;
 }
 
 html.dark .bf-intro {
@@ -138,7 +144,9 @@ html.dark .bf-intro {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 0.55rem;
+  max-width: 94vw;
+  text-align: center;
 }
 
 .bf-intro-kicker {
@@ -146,30 +154,73 @@ html.dark .bf-intro {
   letter-spacing: 0.52em;
   text-transform: uppercase;
   color: var(--bf-muted);
-  animation: bf-rise 0.8s ease both;
+  animation: bf-rise 0.8s ease 0.15s both;
 }
 
 .bf-intro-name {
-  font-size: clamp(2.4rem, 7vw, 5.4rem);
+  font-size: clamp(2.2rem, 6vw, 4.8rem);
   font-weight: 800;
-  letter-spacing: 0.18em;
+  line-height: 1.34;
+  letter-spacing: 0.08em;
+  padding: 0.08em 0.35em 0.16em;
+  white-space: nowrap;
   background: linear-gradient(100deg, #1d4ed8 10%, #38bdf8 55%, #06b6d4 90%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: bf-intro-name 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  -webkit-text-fill-color: transparent;
+  animation: bf-intro-name 1.05s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s both;
+}
+
+html.dark .bf-intro-name {
+  background: linear-gradient(100deg, #bfdbfe 8%, #7dd3fc 55%, #67e8f9 92%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.bf-intro-sub {
+  font-size: 0.9rem;
+  letter-spacing: 0.18em;
+  color: #52627a;
+  animation: bf-rise 0.9s ease 0.55s both;
+}
+
+html.dark .bf-intro-sub {
+  color: #9fb0c8;
 }
 
 .bf-intro-line {
   display: block;
   width: 0;
   height: 1px;
+  margin-top: 0.3rem;
   background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.6), transparent);
-  animation: bf-line 1.4s ease 0.5s forwards;
+  animation: bf-line 1.2s ease 0.7s forwards;
+}
+
+.bf-intro-hint {
+  margin-top: 0.8rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  color: #64748b;
+  opacity: 0;
+  animation: bf-fade-in 0.8s ease 1.5s both;
+}
+
+html.dark .bf-intro-hint {
+  color: #a3b4c8;
 }
 
 .bf-intro.bf-intro-done {
-  animation: bf-intro-out 0.8s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+  opacity: 0;
+  transform: translateY(-14px) scale(1.025);
+  filter: blur(8px);
+}
+
+.bf-intro.bf-intro-skip {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition-duration: 0.55s;
 }
 
 .bf-hero {
@@ -1096,7 +1147,6 @@ html.dark .bf-entry-teal {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bf-intro,
   .bf-intro-glow,
   .bf-blob,
   .bf-orbit,
@@ -1106,6 +1156,25 @@ html.dark .bf-entry-teal {
   .bf-disc,
   .bf-player-toggle::after {
     animation: none !important;
+  }
+
+  .bf-intro {
+    transition-duration: 0.4s;
+  }
+
+  .bf-intro-kicker,
+  .bf-intro-name,
+  .bf-intro-sub,
+  .bf-intro-hint {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .bf-intro-line {
+    animation: none !important;
+    width: min(22rem, 60vw);
   }
 
   #bf-hero-canvas,
@@ -1119,26 +1188,25 @@ html.dark .bf-entry-teal {
   }
 }
 
-@keyframes bf-intro-out {
-  to {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-18px);
-  }
-}
-
 @keyframes bf-intro-name {
   from {
     opacity: 0;
-    letter-spacing: 0.6em;
-    transform: translateY(16px);
-    filter: blur(8px);
+    transform: translateY(14px) scale(0.97);
+    filter: blur(6px);
   }
   to {
     opacity: 1;
-    letter-spacing: 0.18em;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     filter: blur(0);
+  }
+}
+
+@keyframes bf-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.9;
   }
 }
 

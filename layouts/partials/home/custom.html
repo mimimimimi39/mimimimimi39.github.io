@@ -9,11 +9,14 @@
 {{ $categoryCount := len .Site.Taxonomies.categories }}
 
 <div class="bf-intro" id="bf-intro" aria-hidden="true">
+  <noscript><style>#bf-intro{display:none!important}</style></noscript>
   <div class="bf-intro-glow"></div>
   <div class="bf-intro-inner">
     <span class="bf-intro-kicker">WELCOME TO</span>
     <span class="bf-intro-name">{{ .Site.Title }}</span>
+    <span class="bf-intro-sub">欢迎来到 {{ .Site.Title }}</span>
     <span class="bf-intro-line"></span>
+    <span class="bf-intro-hint">点击任意处进入</span>
   </div>
 </div>
 
@@ -120,18 +123,21 @@
   const intro = document.getElementById("bf-intro");
   if (intro) {
     const seen = sessionStorage.getItem("bf-intro-seen");
-    if (seen || reduced) {
+    if (seen) {
       intro.remove();
     } else {
       document.documentElement.classList.add("bf-locked");
-      const dismiss = () => {
+      let closed = false;
+      const dismiss = (fast) => {
+        if (closed) return;
+        closed = true;
         sessionStorage.setItem("bf-intro-seen", "1");
-        intro.classList.add("bf-intro-done");
+        intro.classList.add(fast ? "bf-intro-skip" : "bf-intro-done");
         document.documentElement.classList.remove("bf-locked");
-        setTimeout(() => intro.remove(), 900);
+        setTimeout(() => intro.remove(), fast ? 650 : 1400);
       };
-      intro.addEventListener("click", dismiss, { once: true });
-      setTimeout(dismiss, 2600);
+      intro.addEventListener("click", () => dismiss(true), { once: true });
+      setTimeout(() => dismiss(false), reduced ? 2600 : 4500);
     }
   }
 
