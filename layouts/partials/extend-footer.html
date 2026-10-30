@@ -38,7 +38,7 @@
 
     <div class="bf-volume">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M17 9a4 4 0 0 1 0 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-      <input class="bf-range" id="bf-volume" type="range" min="0" max="1" value="0.6" step="0.01" aria-label="音量">
+      <input class="bf-range" id="bf-volume" type="range" min="0" max="1" value="0.1" step="0.01" aria-label="音量">
     </div>
 
     <ol class="bf-playlist" id="bf-playlist"></ol>
@@ -237,12 +237,12 @@
     audio.loop = false;
   });
 
-  const savedVolume = Number(localStorage.getItem("bf-volume"));
-  volume.value = Number.isFinite(savedVolume) ? String(Math.min(1, Math.max(0, savedVolume))) : "0.6";
+  const savedVolume = Number.parseFloat(localStorage.getItem("bf-volume-v2"));
+  volume.value = Number.isFinite(savedVolume) ? String(Math.min(1, Math.max(0, savedVolume))) : "0.1";
   audio.volume = Number(volume.value);
   volume.addEventListener("input", () => {
     audio.volume = Number(volume.value);
-    localStorage.setItem("bf-volume", volume.value);
+    localStorage.setItem("bf-volume-v2", volume.value);
   });
 
   seek.addEventListener("pointerdown", () => { dragging = true; });
@@ -288,5 +288,21 @@
 
   load(index, false);
   syncIcon();
+
+  if (document.querySelector(".bf-hero")) {
+    const startMusic = () => {
+      if (audio.paused) audio.play().catch(() => {});
+    };
+    const unlock = () => {
+      startMusic();
+      document.removeEventListener("pointerdown", unlock);
+      document.removeEventListener("keydown", unlock);
+      document.removeEventListener("touchstart", unlock);
+    };
+    startMusic();
+    document.addEventListener("pointerdown", unlock, { once: true, passive: true });
+    document.addEventListener("keydown", unlock, { once: true });
+    document.addEventListener("touchstart", unlock, { once: true, passive: true });
+  }
 })();
 </script>
