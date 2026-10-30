@@ -1,0 +1,245 @@
+{{ $author := .Site.Params.author }}
+{{ $avatar := resources.Get ($author.image | default "img/avatar.png") }}
+{{ $avatarURL := "" }}
+{{ with $avatar }}
+  {{ $avatarURL = (.Fill "320x320 Center q92").RelPermalink }}
+{{ end }}
+{{ $postCount := len (where .Site.RegularPages "Section" "posts") }}
+{{ $tagCount := len .Site.Taxonomies.tags }}
+{{ $categoryCount := len .Site.Taxonomies.categories }}
+
+<div class="bf-intro" id="bf-intro" aria-hidden="true">
+  <div class="bf-intro-glow"></div>
+  <div class="bf-intro-inner">
+    <span class="bf-intro-kicker">WELCOME TO</span>
+    <span class="bf-intro-name">{{ .Site.Title }}</span>
+    <span class="bf-intro-line"></span>
+  </div>
+</div>
+
+<section class="bf-hero">
+  <div class="bf-hero-bg" aria-hidden="true">
+    <div class="bf-blob bf-blob-a"></div>
+    <div class="bf-blob bf-blob-b"></div>
+    <div class="bf-blob bf-blob-c"></div>
+    <div class="bf-grid"></div>
+    <canvas id="bf-hero-canvas"></canvas>
+  </div>
+
+  <div class="bf-hero-inner">
+    <div class="bf-hero-copy">
+      <p class="bf-eyebrow">HELLO, WORLD</p>
+      <h1 class="bf-title">
+        <span class="bf-title-zh">{{ $author.name | default .Site.Title }}</span>
+        <span class="bf-title-en">a quiet place for CTF notes</span>
+      </h1>
+      <p class="bf-typed" aria-label="{{ $author.headline }}">
+        <span class="bf-typed-prefix">&gt;</span>
+        <span id="bf-typed-text" data-text="{{ $author.headline }}"></span><span class="bf-caret" aria-hidden="true"></span>
+      </p>
+      <p class="bf-bio">{{ $author.bio }}</p>
+
+      <div class="bf-actions">
+        <a class="bf-btn bf-btn-primary" href="{{ "/posts/" | relLangURL }}">
+          <span>开始阅读</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="bf-btn bf-btn-ghost" href="{{ "/about/" | relLangURL }}">关于我</a>
+      </div>
+
+      <ul class="bf-meta">
+        <li>CTF</li>
+        <li>取证</li>
+        <li>流量分析</li>
+        <li>Web 安全</li>
+      </ul>
+    </div>
+
+    <div class="bf-hero-visual">
+      <div class="bf-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="bf-avatar-card">
+        <div class="bf-avatar-glow" aria-hidden="true"></div>
+        {{ with $avatarURL }}
+          <img src="{{ . }}" width="320" height="320" alt="{{ $author.name }}" class="bf-avatar" loading="eager" fetchpriority="high">
+        {{ else }}
+          <div class="bf-avatar bf-avatar-fallback">{{ substr ($author.name | default "M") 0 1 }}</div>
+        {{ end }}
+        <div class="bf-avatar-info">
+          <span class="bf-avatar-status"><i></i> online</span>
+          <span class="bf-avatar-name">{{ $author.name }}</span>
+        </div>
+      </div>
+      <div class="bf-chip bf-chip-a">CTFer</div>
+      <div class="bf-chip bf-chip-b">术力口</div>
+      <div class="bf-chip bf-chip-c">取证 / 流量</div>
+    </div>
+  </div>
+
+  <div class="bf-entries">
+    <a class="bf-entry" href="{{ "/posts/" | relLangURL }}">
+      <span class="bf-entry-icon bf-entry-blue">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v18H6.5A2.5 2.5 0 0 1 4 18.5v-13Z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 7h7M8 11h7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      </span>
+      <span class="bf-entry-body">
+        <strong>文章</strong>
+        <small>{{ $postCount }} 篇学习笔记</small>
+      </span>
+      <span class="bf-entry-arrow" aria-hidden="true">↗</span>
+    </a>
+    <a class="bf-entry" href="{{ "/tags/" | relLangURL }}">
+      <span class="bf-entry-icon bf-entry-cyan">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5V4h5.5L20 14.5 14.5 20 4 9.5Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.6" fill="currentColor"/></svg>
+      </span>
+      <span class="bf-entry-body">
+        <strong>标签</strong>
+        <small>{{ $tagCount }} 个关键词 · {{ $categoryCount }} 个分类</small>
+      </span>
+      <span class="bf-entry-arrow" aria-hidden="true">↗</span>
+    </a>
+    <a class="bf-entry" href="{{ "/about/" | relLangURL }}">
+      <span class="bf-entry-icon bf-entry-teal">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c.8-3.6 3.4-5.6 7-5.6s6.2 2 7 5.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      </span>
+      <span class="bf-entry-body">
+        <strong>关于</strong>
+        <small>自我介绍与联系方式</small>
+      </span>
+      <span class="bf-entry-arrow" aria-hidden="true">↗</span>
+    </a>
+  </div>
+
+  <a class="bf-scroll" href="{{ "/posts/" | relLangURL }}" aria-label="向下浏览">
+    <span class="bf-scroll-dot"></span>
+  </a>
+</section>
+
+<script>
+(() => {
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const intro = document.getElementById("bf-intro");
+  if (intro) {
+    const seen = sessionStorage.getItem("bf-intro-seen");
+    if (seen || reduced) {
+      intro.remove();
+    } else {
+      document.documentElement.classList.add("bf-locked");
+      const dismiss = () => {
+        sessionStorage.setItem("bf-intro-seen", "1");
+        intro.classList.add("bf-intro-done");
+        document.documentElement.classList.remove("bf-locked");
+        setTimeout(() => intro.remove(), 900);
+      };
+      intro.addEventListener("click", dismiss, { once: true });
+      setTimeout(dismiss, 2600);
+    }
+  }
+
+  const typed = document.getElementById("bf-typed-text");
+  if (typed) {
+    const text = typed.dataset.text || "";
+    if (reduced) {
+      typed.textContent = text;
+    } else {
+      let i = 0;
+      const tick = () => {
+        typed.textContent = text.slice(0, i);
+        i += 1;
+        if (i <= text.length) setTimeout(tick, 55);
+      };
+      setTimeout(tick, 900);
+    }
+  }
+
+  const canvas = document.getElementById("bf-hero-canvas");
+  if (!canvas || reduced) return;
+  const ctx = canvas.getContext("2d");
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let width = 0;
+  let height = 0;
+  let points = [];
+  let raf = 0;
+  const mouse = { x: -9999, y: -9999 };
+
+  const resize = () => {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    width = rect.width;
+    height = rect.height;
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const total = Math.min(90, Math.max(28, Math.floor((width * height) / 16000)));
+    points = Array.from({ length: total }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.28,
+      vy: (Math.random() - 0.5) * 0.28,
+      r: Math.random() * 1.6 + 0.8
+    }));
+  };
+
+  const draw = () => {
+    ctx.clearRect(0, 0, width, height);
+    for (const p of points) {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > width) p.vx *= -1;
+      if (p.y < 0 || p.y > height) p.vy *= -1;
+      const dx = p.x - mouse.x;
+      const dy = p.y - mouse.y;
+      const dist = Math.hypot(dx, dy);
+      if (dist < 130) {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(mouse.x, mouse.y);
+        ctx.strokeStyle = "rgba(56, 189, 248, " + (0.18 * (1 - dist / 130)).toFixed(3) + ")";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(59, 130, 246, 0.45)";
+      ctx.fill();
+    }
+    for (let i = 0; i < points.length; i += 1) {
+      for (let j = i + 1; j < points.length; j += 1) {
+        const a = points[i];
+        const b = points[j];
+        const d = Math.hypot(a.x - b.x, a.y - b.y);
+        if (d < 92) {
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = "rgba(96, 165, 250, " + (0.12 * (1 - d / 92)).toFixed(3) + ")";
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+    }
+    raf = requestAnimationFrame(draw);
+  };
+
+  const start = () => {
+    resize();
+    cancelAnimationFrame(raf);
+    draw();
+  };
+
+  window.addEventListener("resize", start);
+  window.addEventListener("pointermove", (event) => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = event.clientX - rect.left;
+    mouse.y = event.clientY - rect.top;
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      cancelAnimationFrame(raf);
+    } else {
+      draw();
+    }
+  });
+  start();
+})();
+</script>

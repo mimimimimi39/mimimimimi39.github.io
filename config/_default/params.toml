@@ -2,9 +2,9 @@
 # Refer to the theme docs for more details about each of these parameters.
 # https://blowfish.page/docs/configuration/#theme-parameters
 
-colorScheme = "avocado"
+colorScheme = "ocean"
 defaultAppearance = "light"
-autoSwitchAppearance = true
+autoSwitchAppearance = false
 
 enableA11y = false
 enableSearch = true
@@ -24,8 +24,8 @@ replyByEmail = false
   showScrollToTop = true
 
 [homepage]
-  layout = "profile"
-  showRecent = true
+  layout = "custom"
+  showRecent = false
   showRecentItems = 5
   showMoreLink = true
   showMoreLinkDest = "/posts"
