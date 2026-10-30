@@ -7,5 +7,5 @@
 links:
   - name: "tuxnode"
     url: "https://tuxnode.github.io"
-    avatar: "https://raw.githubusercontent.com/tuxnode/tuxnode.github.io/master/tux.jpeg"
+    avatar: "/img/friends/tuxnode.jpg"
     description: "Jalon Rix · A passionate programmer (CTF Web)"
