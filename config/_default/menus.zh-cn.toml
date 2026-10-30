@@ -6,6 +6,11 @@
   weight = 10
 
 [[main]]
+  name = "知识库"
+  pageRef = "notes"
+  weight = 12
+
+[[main]]
   name = "介绍"
   pageRef = "intro"
   weight = 15
