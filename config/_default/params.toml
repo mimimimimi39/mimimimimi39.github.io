@@ -9,6 +9,7 @@ autoSwitchAppearance = false
 enableA11y = false
 enableSearch = true
 enableCodeCopy = true
+smartTOC = true
 
 mainSections = ["posts"]
 replyByEmail = false

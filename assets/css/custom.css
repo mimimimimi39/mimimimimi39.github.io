@@ -1288,3 +1288,49 @@ html.dark .bf-entry-teal {
     opacity: 0;
   }
 }
+
+#TableOfContents li,
+#TableOfContentsMobile li {
+  position: relative;
+}
+
+#TableOfContents li > a,
+#TableOfContentsMobile li > a {
+  padding-right: 1.7rem;
+}
+
+.bf-toc-toggle {
+  position: absolute;
+  top: 0.18rem;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  color: currentColor;
+  opacity: 0.42;
+  border: 0;
+  border-radius: 0.35rem;
+  background: transparent;
+  cursor: pointer;
+  transition: opacity 0.2s ease, background 0.2s ease;
+}
+
+.bf-toc-toggle:hover {
+  opacity: 0.9;
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.bf-toc-toggle svg {
+  transition: transform 0.25s ease;
+}
+
+li.bf-toc-collapsed > ul {
+  display: none;
+}
+
+li.bf-toc-collapsed > .bf-toc-toggle svg {
+  transform: rotate(-90deg);
+}
+

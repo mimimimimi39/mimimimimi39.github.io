@@ -60,6 +60,34 @@
   else if (/^\/categories/.test(path)) accent = "violet";
   if (accent) document.documentElement.dataset.accent = accent;
 
+  const decorateTOC = () => {
+    document.querySelectorAll("#TableOfContents, #TableOfContentsMobile").forEach((toc) => {
+      toc.querySelectorAll("li").forEach((li) => {
+        const sublist = Array.from(li.children).find((child) => child.tagName === "UL");
+        if (!sublist || li.querySelector(":scope > .bf-toc-toggle")) return;
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "bf-toc-toggle";
+        button.setAttribute("aria-label", "收起子目录");
+        button.setAttribute("aria-expanded", "true");
+        button.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        button.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          const collapsed = li.classList.toggle("bf-toc-collapsed");
+          button.setAttribute("aria-expanded", String(!collapsed));
+          button.setAttribute("aria-label", collapsed ? "展开子目录" : "收起子目录");
+        });
+        li.insertBefore(button, sublist);
+      });
+    });
+  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", decorateTOC, { once: true });
+  } else {
+    decorateTOC();
+  }
+
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const fine = window.matchMedia("(pointer: fine)").matches;
 
