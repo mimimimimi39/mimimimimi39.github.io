@@ -685,7 +685,7 @@ html.dark .bf-chip {
 .bf-entries {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
   width: 100%;
   max-width: 72rem;
@@ -741,6 +741,11 @@ html.dark .bf-chip {
   background: rgba(20, 184, 166, 0.12);
 }
 
+.bf-entry-indigo {
+  color: #4338ca;
+  background: rgba(99, 102, 241, 0.12);
+}
+
 html.dark .bf-entry-blue {
   color: #93c5fd;
   background: rgba(37, 99, 235, 0.18);
@@ -754,6 +759,11 @@ html.dark .bf-entry-cyan {
 html.dark .bf-entry-teal {
   color: #5eead4;
   background: rgba(20, 184, 166, 0.16);
+}
+
+.bf-entry-indigo {
+  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.18);
 }
 
 .bf-entry-body {
@@ -1094,6 +1104,12 @@ html.dark .bf-entry-teal {
   text-align: center;
   color: var(--bf-muted);
   opacity: 0.8;
+}
+
+@media (max-width: 1100px) {
+  .bf-entries {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 900px) {
