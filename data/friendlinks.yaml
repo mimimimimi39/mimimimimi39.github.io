@@ -4,4 +4,8 @@
 #   avatar: "https://example.com/avatar.png"
 #   description: "一句话介绍"
 
-links: []
+links:
+  - nmae: "tuxnode"
+    url: "https://tuxnode.github.io"
+    avatar: "https://github.com/tuxnode/tuxnode.github.io/blob/master/tux.jpeg"
+    description: "A passionate programmer (CTF Web) "
