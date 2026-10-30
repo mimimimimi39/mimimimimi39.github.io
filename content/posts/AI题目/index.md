@@ -1,7 +1,11 @@
 ---
 title: "AI 题目"
+date: 2026-10-30
+draft: false
 description: "AI 题中的提示词提取、提示词绕过和对抗样本基础。"
 tags: ["AI", "提示词", "CTF"]
+categories: ["学习笔记"]
+aliases: ["/notes/ai题目/"]
 showTableOfContents: true
 ---
 

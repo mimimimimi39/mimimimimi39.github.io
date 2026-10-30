@@ -5,6 +5,7 @@ draft: false
 description: "Web 方向不是背 payload，而是理解请求怎么流动。附常见漏洞速查和常用工具。"
 tags: ["CTF", "Web", "Web安全", "学习路线"]
 categories: ["学习笔记"]
+aliases: ["/notes/web安全/"]
 showTableOfContents: true
 ---
 
@@ -82,7 +83,50 @@ Web 入门最容易被带偏：收藏一堆 payload，看到输入框就乱试�
 
 重点：能独立完成基础难度的 CTF Web 题，并写清楚利用链。
 
-## 二、常用命令
+## 二、AWD 与 PHP 危险函数
+
+AWD（Attack With Defence）是攻防对抗赛：每队维护服务器，攻击别人拿 flag，自己被打就扣分，服务宕机也扣分。
+
+开局流程：
+
+1. 确认 SSH 账号、端口、密码，改掉默认密码
+2. 备份源码和数据库
+3. 找预留后门
+4. 扫端口、看服务
+5. 修漏洞、加监控
+6. 写批量脚本
+
+```bash
+cd /var/www && tar -czvf /tmp/html.tgz html
+mysqldump -uroot -proot --databases DB1 DB2 > /tmp/db.sql
+scp -P 22 user@host:/tmp/db.sql ./
+```
+
+找后门时重点看：
+
+- 最近修改的文件、隐藏文件、异常权限
+- `eval`、`assert`、`system`、`base64_decode` 等危险函数
+- 不死马、内存马、计划任务、SSH 公钥
+- 上传目录和可写目录
+
+```text
+eval
+assert
+system
+exec
+shell_exec
+passthru
+popen
+base64_decode
+gzinflate
+preg_replace /e
+call_user_func
+call_user_func_array
+```
+
+防御至少做到：备份、改密码、删后门、修漏洞、限制上传目录执行、保留日志。
+
+## 三、常用命令
 
 ```bash
 # 看响应头
@@ -109,7 +153,7 @@ Burp 里最常用的功能：
 - Decoder：编解码
 - Comparer：比较响应差异
 
-## 三、做题流程
+## 四、做题流程
 
 1. 读题，记录题目名、描述、提示
 2. 看页面源码、注释、JS 文件
@@ -120,7 +164,7 @@ Burp 里最常用的功能：
 7. 构造利用链，拿 flag
 8. 写 writeup，记录卡点
 
-## 四、常见坑
+## 五、常见坑
 
 - 只背 payload，不理解为什么能打
 - 忽略 URL 编码和二次编码
@@ -139,3 +183,5 @@ Web 入门的关键是理解请求怎么走、数据在哪一层被处理。工�
 把本地靶场刷熟，再去打 CTF 题，最后再碰代码审计。一步一步来，比收藏一百个 payload 有用得多。
 
 > 本文只讨论 CTF 比赛和授权靶场中的 Web 安全技术。未经授权对真实站点进行测试属于违法行为。
+>
+> AWD 部分参考：先知社区《浅谈AWD攻防赛的生存攻略》<https://xz.aliyun.com/news/10856>

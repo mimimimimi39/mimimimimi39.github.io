@@ -1,7 +1,11 @@
 ---
 title: "Misc 工具"
+date: 2026-10-30
+draft: false
 description: "文件头速查、命令行基础、不可打印字符和 Misc 题型思路。"
 tags: ["Misc", "工具", "CTF"]
+categories: ["工具"]
+aliases: ["/notes/misc工具/"]
 showTableOfContents: true
 ---
 

@@ -2,7 +2,7 @@
 title: "流量分析"
 date: 2026-10-30
 draft: false
-description: "Wireshark 只是工具，真正要学的是协议、过滤和还原思路。附常用过滤、tshark 命令和常见坑。"
+description: "流量分析的入门路线：该学什么、按什么顺序学，以及怎么把知识用进题目。"
 tags: ["CTF", "流量分析", "Wireshark", "Misc"]
 categories: ["学习笔记"]
 showTableOfContents: true
@@ -10,7 +10,9 @@ showTableOfContents: true
 
 流量分析题看起来很吓人：一个几十兆的 pcap，几万个包，堆在 Wireshark 里密密麻麻。但做多了会发现，大部分题并不难，只是对协议不熟、不知道该看哪里。
 
-这篇是我自己的流量分析入门路线，重点不是背过滤语法，而是建立「先看什么、再怎么缩小范围」的直觉。
+这篇只讲**学习路线**。过滤语法、命令、协议速查和特殊流量细节放在知识库里：
+
+> 速查：[知识库 / 流量分析](/notes/流量分析/)
 
 ## 先说结论
 
@@ -75,69 +77,20 @@ showTableOfContents: true
 
 重点：能把流量和取证、隐写题联系起来。
 
-## 二、常用过滤与命令
+## 二、学习顺序
 
-### display filter
+1. 先补网络分层、TCP/UDP、HTTP、DNS、TLS 这些最低限度的概念
+2. 把 Wireshark 的统计、过滤、Follow Stream、Export Objects 练熟
+3. 按协议刷题：HTTP → DNS → FTP/SMB → TLS
+4. 再补特殊流量：USB、无线、蓝牙、Webshell、认证协议
+5. 最后写脚本，把重复操作自动化
 
-```text
-http
-http.request.method == "POST"
-http.response.code >= 400
-http contains "flag"
-http.host contains "example.com"
-dns.qry.name contains "flag"
-tcp.stream eq 3
-ip.addr == 192.168.1.10
-tcp.port == 8080
-tls.handshake.type == 1
-frame contains "password"
-```
-
-### tshark
-
-```bash
-# 看前 20 个包
-tshark -r capture.pcap -c 20
-
-# 只看 HTTP 请求
-tshark -r capture.pcap -Y 'http.request'
-
-# 提取 URL
-tshark -r capture.pcap -Y 'http.request' -T fields -e http.host -e http.request.uri
-
-# 导出 HTTP 对象
-tshark -r capture.pcap --export-objects http,out
-
-# 统计协议分布
-tshark -r capture.pcap -q -z io,phs
-```
-
-## 三、做题流程
-
-1. `Statistics → Protocol Hierarchy` 看协议分布
-2. `Conversations` 看流量最大的会话
-3. 按协议过滤，先找 HTTP、DNS、FTP 这类明文
-4. Follow Stream 还原会话
-5. Export Objects 导出文件
-6. 对可疑数据做解码：URL、Base64、gzip、Hex
-7. 建立时间线，把多个会话串起来
-
-## 四、常见坑
-
-- 把 capture filter 当 display filter 用
-- 只看单个包，不看完整流
-- 忽略 TCP 重组，导致内容缺一段
-- HTTP 是 chunked 或 gzip，直接看原始字节像乱码
-- TLS 流量硬啃，没先找 key log 或证书
-- pcap 太大，全量加载卡死
-- 导出文件后不确认文件类型
-- 忘记 URL 解码和 Base64 解码
-- 只盯一个流，漏掉旁边的 DNS 或 ICMP
+具体过滤器和命令见 [知识库 / 流量分析](/notes/流量分析/)。
 
 ## 结语
 
 流量分析的核心不是工具，而是「先缩小范围，再还原内容」。协议熟了、过滤会了、文件能导出来，大部分题就能做。
 
-把上面的内容过一遍，然后去刷题。真正的手感来自反复还原完整会话，而不是看更多教程。
+把上面的路线走一遍，然后去刷题。真正的手感来自反复还原完整会话，而不是看更多教程。
 
 > 本文只讨论 CTF 比赛和授权环境中的流量分析，请勿用于未授权的网络监听或数据提取。
