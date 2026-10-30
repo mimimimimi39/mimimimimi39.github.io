@@ -13,8 +13,8 @@ title = "mimi小窝"
 [params.author]
   name = "みみみみみ"
   image = "img/avatar.png"
-  headline = "CTFer · 网安 · 术力口&咖啡&滑板"
-  bio = "记录 CTF学习笔记，有意思的小事以及日常碎碎念。"
+  headline = "隐写 · 流量 · 取证 · web · 日常"
+  bio = "记录CTF学习笔记，有意思的小事以及日常碎碎念。"
   links = [
     { github = "https://github.com/mimimimimi39" },
   ]
