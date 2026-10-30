@@ -1,24 +1,30 @@
 ---
-title: "mimi(qbot)"
+title: "mimi（QQ Bot）"
 date: 2026-10-30
+draft: false
 description: "从协议端选型到多模态、联网、定时任务与 QQ 空间，一次完整的 QQ Bot 搭建复盘。"
-tags: ["qqbot", "python", "napcat", "deepseekv4.1", "image2.5"]
+summary: "从协议端选型到多模态、联网、定时任务与 QQ 空间，一次完整的 QQ Bot 搭建复盘。"
+tags: ["QQBot", "Python", "NapCat", "DeepSeek", "image2.5"]
 categories: ["项目"]
+aliases: ["/posts/mimiqbot/"]
+showTableOfContents: true
 ---
 
-# mimi
+我的专属 QQ 群 AI Bot「mimi」，人设是一个 120 岁的精灵女仆（容貌和心智相当于 12 岁人类小孩），身高 142 cm，雪白色长发，天蓝色眼睛，穿水色连衣裙，性格可爱温柔。唯一的主人是「みみみみみ」。
 
-我的专属q群aibot，大致人设为一个120岁的精灵女仆（容貌和心智相当于12岁人类小孩），身高142cm，雪白色长发，天蓝色眼睛，穿水色连衣裙，性格可爱温柔。唯一的主人是「みみみみみ」
-代理qq：3642694923
-LLM：deepseekV4.1 flash
-image：image2.5
-- 自行作画展示
-  ![自画](\mimi1.jpg) ![自画](\mimi2.jpg) ![自画](\mimi3.jpg)
-- 部分动态效果及日常对话展示
-  ![日常](\richang.jpg) ![动态](\dongtai.jpg)
+- 代理 QQ：3642694923
+- LLM：DeepSeek V4.1 Flash
+- 出图：image2.5
 
+> 真的是非常可爱呢（感叹）
 
-- 真的是非常可爱呢（感叹）
+{{< gallery >}}
+  <img src="mimi1.jpg" class="grid-w33" alt="mimi 自画像 1" loading="lazy" />
+  <img src="mimi2.png" class="grid-w33" alt="mimi 自画像 2" loading="lazy" />
+  <img src="mimi3.jpg" class="grid-w33" alt="mimi 自画像 3" loading="lazy" />
+  <img src="richang.jpg" class="grid-w50 bf-tall-shot" alt="日常对话展示" loading="lazy" />
+  <img src="dongtai.jpg" class="grid-w50 bf-tall-shot" alt="动态效果展示" loading="lazy" />
+{{< /gallery >}}
 
 ## 一、现有功能
 
@@ -37,7 +43,7 @@ image：image2.5
 
 ## 二、最终架构
 
-```
+```text
 QQ 小号 ←→ NapCat（QQ NT，OneBot 11）
               │  WS 3001（事件推送）
               │  HTTP 3000（API 调用）
@@ -57,7 +63,7 @@ QQ 小号 ←→ NapCat（QQ NT，OneBot 11）
 
 **第一版选了 Lagrange.Core**，折腾半天后卡在登录：
 
-```
+```text
 System.Exception: Signer server returned a NotFound
 Unhandled exception. System.Exception: All login failed!
 ```
@@ -86,7 +92,7 @@ NapCat 的 `httpClients` 上报通道在启动时连接失败一次后就不再�
 
 ### 2. 消息处理管线
 
-```
+```text
 收到事件
   ├─ 判断私聊 / 群聊
   ├─ 群聊：只有 @ 自己才继续
@@ -102,7 +108,7 @@ NapCat 的 `httpClients` 上报通道在启动时连接失败一次后就不再�
 
 每条消息都会在开头注入：
 
-```
+```text
 （发送者QQ：2235228080，身份：主人｜现在时间：2026-10-30 周五 13:38）
 ```
 
@@ -112,7 +118,7 @@ NapCat 的 `httpClients` 上报通道在启动时连接失败一次后就不再�
 
 模型按约定输出：
 
-```
+```text
 好呀～想看看mimi画的小猫吗喵 (๑>ᴗ<๑)
 [DRAW]a cute chibi kitten, pastel colors, kawaii style[/DRAW]
 ```
@@ -166,7 +172,7 @@ NapCat 只提供了两个接口：
 
 ### 8. 配置也能对话改
 
-```
+```text
 /config get reply_delay
 /config set reply_delay [1,2]
 /config set qzone_enabled false
@@ -177,7 +183,7 @@ NapCat 只提供了两个接口：
 ## 五、踩坑清单
 
 | 现象 | 根因 | 解决 |
-|---|---|---|
+| --- | --- | --- |
 | Lagrange 登录失败 | 签名服务器 404 | 换 NapCat |
 | 桥接日志全是乱码 | GBK 控制台打印 emoji 抛异常 | `sys.stdout.reconfigure(utf-8)` + 日志写入 try/except |
 | 出图 SSL EOF | 走了系统代理 | 子进程环境变量 `no_proxy=*` |
@@ -193,7 +199,7 @@ NapCat 只提供了两个接口：
 
 ## 六、部署形态
 
-```
+```text
 C:\AAA\AiQQ\
 ├── NapCat\                # 协议端
 ├── bridge\

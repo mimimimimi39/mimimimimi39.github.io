@@ -1334,3 +1334,17 @@ li.bf-toc-collapsed > .bf-toc-toggle svg {
   transform: rotate(-90deg);
 }
 
+.gallery img.bf-tall-shot {
+  height: 22rem;
+  width: 100%;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .gallery img.bf-tall-shot {
+    height: 16rem;
+  }
+}
+
