@@ -1638,3 +1638,104 @@ html.dark .bf-chip:nth-of-type(3n) {
   }
 }
 
+.bf-friend-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin: 1rem 0 1.2rem;
+}
+
+.bf-friend-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--bf-line);
+  border-radius: 1.1rem;
+  background: var(--bf-surface);
+  box-shadow: 0 16px 34px -30px rgba(37, 99, 235, 0.4);
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.bf-friend-card:hover {
+  transform: translateY(-3px) rotate(-0.3deg);
+  border-color: rgba(244, 114, 182, 0.42);
+  box-shadow: 0 22px 40px -28px rgba(219, 39, 119, 0.35);
+}
+
+.bf-friend-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 2.8rem;
+  height: 2.8rem;
+  overflow: hidden;
+  border-radius: 0.9rem;
+  color: #be185d;
+  font-size: 1.05rem;
+  font-weight: 700;
+  background: linear-gradient(140deg, rgba(219, 234, 254, 0.9), rgba(251, 207, 232, 0.8));
+}
+
+.bf-friend-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bf-friend-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.bf-friend-info strong {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--bf-text);
+}
+
+.bf-friend-info small {
+  overflow: hidden;
+  font-size: 0.74rem;
+  color: var(--bf-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bf-friend-arrow {
+  margin-left: auto;
+  color: rgba(219, 39, 119, 0.55);
+  transition: transform 0.25s ease;
+}
+
+.bf-friend-card:hover .bf-friend-arrow {
+  transform: translate(2px, -2px);
+}
+
+.bf-friend-empty {
+  margin: 1rem 0 1.2rem;
+  padding: 1.1rem 1.2rem;
+  border: 1px dashed rgba(244, 114, 182, 0.35);
+  border-radius: 1.1rem;
+  background: rgba(253, 242, 248, 0.55);
+}
+
+.bf-friend-empty strong {
+  color: var(--bf-text);
+}
+
+.bf-friend-empty p {
+  margin: 0.35rem 0 0;
+  color: var(--bf-muted);
+  font-size: 0.86rem;
+}
+
+@media (max-width: 640px) {
+  .bf-friend-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+

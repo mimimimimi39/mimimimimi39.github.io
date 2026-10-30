@@ -1,0 +1,7 @@
+# 友链数据：照着下面的格式添加到 links 下面即可
+# - name: "名字"
+#   url: "https://example.com"
+#   avatar: "https://example.com/avatar.png"
+#   description: "一句话介绍"
+
+links: []
