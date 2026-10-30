@@ -29,6 +29,12 @@
     <div class="bf-blob bf-blob-a"></div>
     <div class="bf-blob bf-blob-b"></div>
     <div class="bf-blob bf-blob-c"></div>
+    <div class="bf-bubble bf-bubble-1"></div>
+    <div class="bf-bubble bf-bubble-2"></div>
+    <div class="bf-bubble bf-bubble-3"></div>
+    <div class="bf-bubble bf-bubble-4"></div>
+    <div class="bf-bubble bf-bubble-5"></div>
+    <div class="bf-bubble bf-bubble-6"></div>
     <div class="bf-grid"></div>
     <canvas id="bf-hero-canvas"></canvas>
   </div>
@@ -47,10 +53,11 @@
       <p class="bf-bio">{{ $author.bio }}</p>
 
       <div class="bf-actions">
-        <a class="bf-btn bf-btn-primary" href="{{ "/posts/" | relLangURL }}">
-          <span>开始阅读</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <a class="bf-btn bf-btn-primary" href="{{ "/start-here/" | relLangURL }}">
+          <span>Start Here</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l1.9 4.8 5.1.6-3.8 3.4 1 5-4.2-2.5-4.2 2.5 1-5L4.9 8.9l5.1-.6L12 3.5Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
         </a>
+        <a class="bf-btn bf-btn-ghost" href="{{ "/posts/" | relLangURL }}">开始阅读</a>
         <a class="bf-btn bf-btn-ghost" href="{{ "/about/" | relLangURL }}">关于我</a>
       </div>
 
@@ -83,6 +90,16 @@
   </div>
 
   <div class="bf-entries">
+    <a class="bf-entry" href="{{ "/start-here/" | relLangURL }}">
+      <span class="bf-entry-icon bf-entry-pink">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l1.9 4.8 5.1.6-3.8 3.4 1 5-4.2-2.5-4.2 2.5 1-5L4.9 8.9l5.1-.6L12 3.5Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="bf-entry-body">
+        <strong>Start Here</strong>
+        <small>第一次来？从这里开始</small>
+      </span>
+      <span class="bf-entry-arrow" aria-hidden="true">↗</span>
+    </a>
     <a class="bf-entry" href="{{ "/posts/" | relLangURL }}">
       <span class="bf-entry-icon bf-entry-blue">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v18H6.5A2.5 2.5 0 0 1 4 18.5v-13Z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 7h7M8 11h7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
