@@ -12,8 +12,8 @@
     </div>
 
     <div class="bf-disc" aria-hidden="true"></div>
-    <div class="bf-track-title" id="bf-track-title">Blue Dawn</div>
-    <div class="bf-track-artist" id="bf-track-artist">占位音轨 · 替换 static/music/</div>
+    <div class="bf-track-title" id="bf-track-title">Toby Fox</div>
+    <div class="bf-track-artist" id="bf-track-artist">mimi小窝</div>
 
     <div class="bf-progress">
       <input class="bf-range" id="bf-seek" type="range" min="0" max="100" value="0" step="0.1" aria-label="播放进度">
@@ -42,7 +42,7 @@
     </div>
 
     <ol class="bf-playlist" id="bf-playlist"></ol>
-    <p class="bf-player-hint">占位音轨，替换 static/music/ 下的 mp3 即可</p>
+    <p class="bf-player-hint">三首歌单 · 列表循环 · 自动记忆音量</p>
     <audio id="bf-audio" preload="metadata"></audio>
   </div>
 </div>
@@ -143,9 +143,9 @@
   const iconPause = document.getElementById("bf-icon-pause");
 
   const tracks = [
-    { title: "Blue Dawn", artist: "占位音轨 01", src: "{{ "music/01-blue-dawn.mp3" | relURL }}" },
-    { title: "Deep Current", artist: "占位音轨 02", src: "{{ "music/02-deep-current.mp3" | relURL }}" },
-    { title: "Crystal Light", artist: "占位音轨 03", src: "{{ "music/03-crystal-light.mp3" | relURL }}" }
+    { title: "Toby Fox", artist: "mimi小窝", src: encodeURI("{{ "music/Toby Fox.mp3" | relURL }}") },
+    { title: "存活千年 (G0RA Remix)", artist: "mimi小窝", src: encodeURI("{{ "music/存活千年【G0RA Remix】.mp3" | relURL }}") },
+    { title: "空に免じて (念及长空)", artist: "mimi小窝", src: encodeURI("{{ "music/空に免じて(念及长空).mp3" | relURL }}") }
   ];
 
   let index = Number(localStorage.getItem("bf-track") || 0);
