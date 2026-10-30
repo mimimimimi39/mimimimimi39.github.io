@@ -30,4 +30,4 @@ showTableOfContents: true
 
 外部参考：Lunatic BLOG《Misc-流量分析》《Misc-数字取证》《CTF-Misc Guide》，先知社区《浅谈AWD攻防赛的生存攻略》。
 
-图片暂未批量导入，需要具体截图时再按需补到对应页面。
+<!-- 内部备注：图片暂未批量导入，需要具体截图时再按需补到对应页面。 -->
