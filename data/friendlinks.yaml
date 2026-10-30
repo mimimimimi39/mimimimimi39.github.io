@@ -5,7 +5,7 @@
 #   description: "一句话介绍"
 
 links:
-  - nmae: "tuxnode"
+  - name: "tuxnode"
     url: "https://tuxnode.github.io"
-    avatar: "https://github.com/tuxnode/tuxnode.github.io/blob/master/tux.jpeg"
-    description: "A passionate programmer (CTF Web) "
+    avatar: "https://raw.githubusercontent.com/tuxnode/tuxnode.github.io/master/tux.jpeg"
+    description: "Jalon Rix · A passionate programmer (CTF Web)"
