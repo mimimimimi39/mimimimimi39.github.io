@@ -1,7 +1,7 @@
 ---
 title: "编码"
 date: 2026-10-29
-draft: true
+draft: flase
 description: "CTF 里大部分编码题不是难，而是没认出来。先分清编码、加密和哈希，再建立“看到特征就知道试什么”的直觉。"
 tags: ["CTF", "编码", "Misc", "学习路线"]
 categories: ["学习笔记"]
