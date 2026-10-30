@@ -684,8 +684,9 @@ html.dark .bf-chip {
 
 .bf-entries {
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
   width: 100%;
   max-width: 72rem;
@@ -695,6 +696,8 @@ html.dark .bf-chip {
 
 .bf-entry {
   display: flex;
+  flex: 1 1 260px;
+  max-width: calc((100% - 2rem) / 3);
   align-items: center;
   gap: 0.95rem;
   padding: 1.15rem 1.2rem;
@@ -746,6 +749,11 @@ html.dark .bf-chip {
   background: rgba(99, 102, 241, 0.12);
 }
 
+.bf-entry-violet {
+  color: #6d28d9;
+  background: rgba(139, 92, 246, 0.12);
+}
+
 html.dark .bf-entry-blue {
   color: #93c5fd;
   background: rgba(37, 99, 235, 0.18);
@@ -764,6 +772,11 @@ html.dark .bf-entry-teal {
 .bf-entry-indigo {
   color: #a5b4fc;
   background: rgba(99, 102, 241, 0.18);
+}
+
+.bf-entry-violet {
+  color: #c4b5fd;
+  background: rgba(139, 92, 246, 0.18);
 }
 
 .bf-entry-body {
@@ -1107,8 +1120,8 @@ html.dark .bf-entry-teal {
 }
 
 @media (max-width: 1100px) {
-  .bf-entries {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .bf-entry {
+    max-width: calc((100% - 1rem) / 2);
   }
 }
 
@@ -1128,8 +1141,11 @@ html.dark .bf-entry-teal {
   }
 
   .bf-entries {
-    grid-template-columns: minmax(0, 1fr);
     margin-top: 2.5rem;
+  }
+
+  .bf-entry {
+    max-width: 100%;
   }
 
   .bf-scroll {

@@ -7,6 +7,10 @@
 {{ $postCount := len (where .Site.RegularPages "Section" "posts") }}
 {{ $tagCount := len .Site.Taxonomies.tags }}
 {{ $categoryCount := len .Site.Taxonomies.categories }}
+{{ $writeupCount := 0 }}
+{{ range $name, $taxonomy := .Site.Taxonomies.tags }}
+  {{ if eq (lower $name) "writeup" }}{{ $writeupCount = len $taxonomy }}{{ end }}
+{{ end }}
 
 <div class="bf-intro" id="bf-intro" aria-hidden="true">
   <noscript><style>#bf-intro{display:none!important}</style></noscript>
@@ -96,6 +100,16 @@
       <span class="bf-entry-body">
         <strong>知识库</strong>
         <small>协议、取证、编码与脚本速查</small>
+      </span>
+      <span class="bf-entry-arrow" aria-hidden="true">↗</span>
+    </a>
+    <a class="bf-entry" href="{{ "/tags/writeup/" | relLangURL }}">
+      <span class="bf-entry-icon bf-entry-violet">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6V3Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 10l2 2-2 2M13 14h3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="bf-entry-body">
+        <strong>Writeup</strong>
+        <small>{{ $writeupCount }} 篇题解 · 比赛复盘</small>
       </span>
       <span class="bf-entry-arrow" aria-hidden="true">↗</span>
     </a>
