@@ -17,8 +17,10 @@ showTableOfContents: false
 - 现于玄天网安实验室担任misc混分手
 
 这个博客用来记录学习内容和有趣日常，先还处于初步开发状态，内容待完善，欢迎各位随便逛逛
+该博客框架由tux佬与deepseek辅助搭建
 
 ## 联系我
 
 - GitHub: [mimimimimi39](https://github.com/mimimimimi39)
 - 邮箱: 2235228080@qq.com
+
