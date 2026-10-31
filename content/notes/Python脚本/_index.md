@@ -271,7 +271,197 @@ for line in lines:
         pass
 ```
 
-## 四、常见坑
+## 四、实用解题脚本
+
+以下脚本来自本地 `C:\AAA\解题脚本`，按用途整理，复制到本地后可直接运行。
+
+### 1. 01 文本转二维码图
+
+适用：文件里是一串 ASCII `0/1`，总位数是完全平方数，想还原成黑白方阵图。
+
+```python
+import math
+import os
+import struct
+import sys
+import zlib
+
+
+def read_bits(path):
+    with open(path, "rb") as f:
+        data = f.read()
+    bits = []
+    for b in data:
+        if b == 0x30:
+            bits.append(0)
+        elif b == 0x31:
+            bits.append(1)
+    return bits
+
+
+def write_png(path, width, height, pixels):
+    raw = bytearray()
+    for y in range(height):
+        raw.append(0)
+        raw.extend(pixels[y * width:(y + 1) * width])
+    compressed = zlib.compress(bytes(raw), 9)
+
+    def chunk(typ, data):
+        body = typ + data
+        return (struct.pack(">I", len(data)) + body +
+                struct.pack(">I", zlib.crc32(body) & 0xffffffff))
+
+    sig = b"\x89PNG\r\n\x1a\n"
+    ihdr = struct.pack(">IIBBBBB", width, height, 8, 0, 0, 0, 0)
+    with open(path, "wb") as f:
+        f.write(sig)
+        f.write(chunk(b"IHDR", ihdr))
+        f.write(chunk(b"IDAT", compressed))
+        f.write(chunk(b"IEND", b""))
+
+
+def main():
+    path = sys.argv[1] if len(sys.argv) > 1 else input("请输入文件路径: ").strip().strip('"')
+    if not os.path.exists(path):
+        print("文件不存在")
+        return
+
+    bits = read_bits(path)
+    total = len(bits)
+    print(f"提取到的 0/1 字节总数: {total}")
+
+    n = math.isqrt(total)
+    if n * n != total:
+        print(f"总 01 字节数 {total} 不能被开方，无法生成方阵图片")
+        return
+
+    def make_image(black_is_one, suffix):
+        px = bytearray()
+        for v in bits:
+            is_black = (v == 1) if black_is_one else (v == 0)
+            px.append(0 if is_black else 255)
+        out = f"qr_{suffix}_{n}x{n}.png"
+        write_png(out, n, n, px)
+        print(f"已生成: {out}")
+
+    make_image(True, "0white1black")
+    make_image(False, "0black1white")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+```bash
+python 01_to_qr.py bits.txt
+```
+
+会生成两种反色版本，哪个看起来像二维码/图案就用哪个。
+
+### 2. Base64 转图片
+
+适用：文本或接口响应里带 `data:image/png;base64,...` 前缀的 Base64。
+
+```python
+import base64
+
+
+def base64_to_img(b64_str, out_path):
+    b64_str = "".join(b64_str.split())
+    if b64_str.lower().startswith("data:") and "," in b64_str:
+        b64_str = b64_str.split(",", 1)[1]
+    img_data = base64.b64decode(b64_str)
+    with open(out_path, "wb") as f:
+        f.write(img_data)
+    print(f"图片已保存到 {out_path}")
+
+
+if __name__ == "__main__":
+    src = input("输入含 Base64 的 txt 路径: ").strip().strip('"')
+    with open(src, "r", encoding="utf-8") as f:
+        base64_to_img(f.read(), "output.png")
+```
+
+注意：输出固定为 `output.png`，实际格式看文件头，必要时改成 `.jpg` / `.gif`。
+
+### 3. ASCII 与三进制互转
+
+适用：题目只给 `0/1/2`，按字符的 ASCII 码转成三进制。
+
+```python
+def to_base3(n):
+    if n == 0:
+        return "0"
+    out = ""
+    while n:
+        out = str(n % 3) + out
+        n //= 3
+    return out
+
+
+def ascii_to_base3(text):
+    return [to_base3(ord(ch)) for ch in text]
+
+
+def base3_to_ascii(groups):
+    return "".join(chr(int(g, 3)) for g in groups)
+
+
+if __name__ == "__main__":
+    text = input("请输入文本：")
+    result = ascii_to_base3(text)
+    print("转换结果：", result)
+```
+
+每个字符单独转，所以输出是列表；反解时需要按分隔符或固定宽度重新分组。
+
+### 4. 文本倒序
+
+适用：整段文本或文件被反转，先还原再继续分析。
+
+```python
+import os
+import sys
+
+
+def detect_encoding(path):
+    with open(path, "rb") as f:
+        raw = f.read(4)
+    if raw.startswith(b"\xff\xfe"):
+        return "utf-16-le"
+    if raw.startswith(b"\xfe\xff"):
+        return "utf-16-be"
+    if raw.startswith(b"\xef\xbb\xbf"):
+        return "utf-8-sig"
+    return "utf-8"
+
+
+def main():
+    if len(sys.argv) < 2:
+        print("用法: python reverse_txt.py 输入文件 输出文件")
+        return
+
+    src = sys.argv[1]
+    dst = sys.argv[2] if len(sys.argv) > 2 else "reversed_" + os.path.basename(src)
+    encoding = detect_encoding(src)
+
+    with open(src, "r", encoding=encoding) as f:
+        content = f.read()
+
+    with open(dst, "w", encoding=encoding) as f:
+        f.write(content[::-1])
+
+    print(f"完成，已生成 {dst} (编码: {encoding})")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+这个脚本按整个文件倒序，换行位置也会一起反转；如果只想倒序每一行，需要先 `splitlines()` 再逐行反转。
+
+## 五、常见坑
+
 
 - `bytes` 和 `str` 混用
 - 解码后直接 `print`，没有 `.decode()`
@@ -280,4 +470,4 @@ for line in lines:
 - 异常全吞掉，出错不知道在哪
 - 不确认文件真实类型就按后缀处理
 
-> 整理自本地笔记《Python 基础知识点》《CTF Misc 脚本专项》。
+> 整理自本地笔记《Python 基础知识点》《CTF Misc 脚本专项》；实用脚本来自本地 `C:\AAA\解题脚本`。
