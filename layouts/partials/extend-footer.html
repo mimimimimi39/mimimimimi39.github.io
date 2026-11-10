@@ -130,6 +130,7 @@
     let points = [];
     let running = false;
     let stamp = 0;
+    let moveCount = 0;
 
     const resize = () => {
       trail.width = Math.floor(window.innerWidth * dpr);
@@ -200,6 +201,8 @@
 
     window.addEventListener("pointermove", (event) => {
       if (event.pointerType === "touch") return;
+      moveCount += 1;
+      if (moveCount % 3 !== 0) return;
       const last = points[points.length - 1];
       const angle = last ? Math.atan2(event.clientY - last.y, event.clientX - last.x) : 0;
       points.push({
