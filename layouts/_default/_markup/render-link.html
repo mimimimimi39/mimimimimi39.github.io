@@ -1,0 +1,19 @@
+{{- $dest := .Destination -}}
+{{- $isExternal := or (hasPrefix $dest "http://") (hasPrefix $dest "https://") (hasPrefix $dest "mailto:") (hasPrefix $dest "#") -}}
+{{- if not $isExternal -}}
+  {{- $u := urls.Parse $dest -}}
+  {{- if hasSuffix $u.Path ".md" -}}
+    {{- $rel := strings.TrimSuffix ".md" $u.Path -}}
+    {{- $targetPath := path.Join "/" .Page.File.Dir $rel -}}
+    {{- if eq (path.Base $targetPath) "README" -}}
+      {{- $targetPath = path.Dir $targetPath -}}
+    {{- end -}}
+        {{- with site.GetPage $targetPath -}}
+      {{- $dest = .RelPermalink -}}
+      {{- with $u.Fragment -}}
+        {{- $dest = printf "%s#%s" $dest . -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+<a href="{{ $dest }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text | safeHTML }}</a>

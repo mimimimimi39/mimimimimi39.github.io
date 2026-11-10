@@ -12,6 +12,7 @@ showTableOfContents: true
 - [数字取证](/notes/数字取证/)：内存、磁盘镜像、系统痕迹、日志与服务器
 - [编码密码](/notes/编码密码/)：进制与 Base、古典密码、特殊编码、现代加密、压缩包攻击
 - [Python 脚本](/notes/python脚本/)：Python 基础、Misc 常用脚本模板
+- [蓝队](/notes/蓝队/)：从零基础到可实习的完整蓝队学习路线
 
 ## 相关文章
 
@@ -26,7 +27,7 @@ showTableOfContents: true
 
 ## 覆盖范围
 
-本地笔记：流量基础、流量做题流程、协议学习、Wireshark 过滤器、USB 键盘流量、无线网络、蓝牙、TLS/SSL 解密、内存取证、Hash、明文爆破、非对称加密、Python 基础、Misc 脚本、HTTP、AWD、PHP 危险函数、命令行、文件头、不可打印字符、AI 提示词。
+本地笔记：流量基础、流量做题流程、协议学习、Wireshark 过滤器、USB 键盘流量、无线网络、蓝牙、TLS/SSL 解密、内存取证、Hash、明文爆破、非对称加密、Python 基础、Misc 脚本、HTTP、AWD、PHP 危险函数、命令行、文件头、不可打印字符、AI 提示词、蓝队完整路线。
 
 外部参考：Lunatic BLOG《Misc-流量分析》《Misc-数字取证》《CTF-Misc Guide》，先知社区《浅谈AWD攻防赛的生存攻略》。
 

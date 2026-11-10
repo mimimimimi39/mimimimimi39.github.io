@@ -18,8 +18,24 @@
         </div>
       </div>
     {{ end }}
-    <div class="min-w-0 min-h-0 max-w-prose w-full">
+    <div class="bf-note-content min-w-0 min-h-0 max-w-prose w-full">
       {{ .Content }}
     </div>
   </section>
+
+  {{ $children := where .Pages "Kind" "page" }}
+  {{ if gt (len $children) 0 }}
+    <section class="bf-note-index">
+      <h2>本模块文章</h2>
+      <div class="bf-note-index-grid">
+        {{ range $children.ByWeight }}
+          <a class="bf-note-index-card" href="{{ .RelPermalink }}">
+            <strong>{{ .Title }}</strong>
+            <span>{{ if .ReadingTime }}{{ .ReadingTime }} 分钟{{ else }}阅读{{ end }}</span>
+            <i aria-hidden="true">↗</i>
+          </a>
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
 {{ end }}

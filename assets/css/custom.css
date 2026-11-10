@@ -1739,3 +1739,79 @@ html.dark .bf-chip:nth-of-type(3n) {
   }
 }
 
+.bf-note-index {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.bf-note-index h2 {
+  margin-bottom: 0.9rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--bf-text);
+}
+
+.bf-note-index-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.bf-note-index-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid var(--bf-line);
+  border-radius: 0.9rem;
+  background: var(--bf-surface);
+  text-decoration: none;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.bf-note-index-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(244, 114, 182, 0.38);
+  box-shadow: 0 18px 34px -28px rgba(219, 39, 119, 0.4);
+}
+
+.bf-note-index-card strong {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--bf-text);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bf-note-index-card span {
+  color: var(--bf-muted);
+  font-size: 0.7rem;
+}
+
+.bf-note-index-card i {
+  color: rgba(219, 39, 119, 0.55);
+  font-style: normal;
+}
+
+@media (max-width: 640px) {
+  .bf-note-index-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.bf-note-content:has(table) {
+  max-width: 100%;
+}
+
+.bf-note-content table {
+  width: 100%;
+}
+
+.bf-note-content table th,
+.bf-note-content table td {
+  vertical-align: top;
+}
+
